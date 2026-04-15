@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mr. Jealousy — Ervaar de sfeer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══════════════════════════════════════════
+       PAGE 1 — LANDING / UPLOAD
+  ══════════════════════════════════════════ -->
+  <section id="page-landing" class="page active">
+
+    <div class="topbar">
+      <button class="btn-close" id="btn-sluiten-landing" aria-label="Sluiten">
+        Sluiten
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="landing-content">
+
+      <!-- MJ logo avatar -->
+      <div class="avatar avatar-mj" aria-hidden="true">
+        <img src="/img/speechbubble-logo.svg" alt="Mr. Jealousy logo">
+      </div>
+
+      <h1 class="landing-headline">
+        Ervaar de sfeer van jaloezieën in jouw ruimte.
+      </h1>
+
+      <!-- Upload drop zone -->
+      <label class="upload-card" id="upload-zone" for="file-input">
+        <input
+          type="file"
+          id="file-input"
+          accept="image/png,image/jpeg,image/webp"
+          aria-label="Upload een foto van jouw ramen"
+        />
+        <div class="upload-icon"><img src="/img/icon-camera.png" alt="Camera"></div>
+        <p class="upload-primary">
+          Sleep <strong>een foto van jouw ramen</strong><br>
+          of klik om te selecteren
+        </p>
+        <p class="upload-hint">PNG, JPG of WEBP (Max. 4MB)</p>
+      </label>
+
+      <p class="landing-disclaimer">
+        Dit is een AI-tool en dit is een dikke disclaimer. Er kunnen geen rechten
+        worden ontleend aan deze tool, bla bla. Lees meer in onze
+        <a href="#" target="_blank">algemene voorwaarden</a>.
+      </p>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       PAGE 2 — LOADING (ALTERNATIVE)
+  ══════════════════════════════════════════ -->
+  <section id="page-loading" class="page">
+
+    <div class="topbar">
+      <button class="btn-close" id="btn-afsluiten-loading" aria-label="Afsluiten">
+        Afsluiten
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="loading-inner">
+
+      <div class="chat-row" id="chat-row">
+        <div class="avatar avatar-mj" aria-hidden="true">
+          <img src="/img/speechbubble-logo.svg" alt="Mr. Jealousy logo">
+        </div>
+        <div class="chat-text-carousel" id="chat-carousel">
+          <span class="carousel-item">Hey Gorgeous…</span>
+          <span class="carousel-item">Let's do some magic! ✨</span>
+        </div>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <p class="loading-disclaimer">
+        Dit is een AI-tool en dit is een dikke disclaimer. Er kunnen geen rechten
+        worden ontleend aan deze tool, bla bla. Lees meer in onze
+        <a href="#" target="_blank">algemene voorwaarden</a>. Nullam id dolor id
+        nibh ultricies vehicula ut id elit. Maecenas sed diam eget risus varius
+        blandit sit amet non magna.
+      </p>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       PAGE 3 — RESULT
+  ══════════════════════════════════════════ -->
+  <section id="page-result" class="page">
+
+    <!-- LEFT: Before / After slider -->
+    <div class="result-left">
+
+      <div class="before-after-container" id="ba-container">
+        <img class="ba-image ba-before" id="ba-before" src="" alt="Originele foto" />
+        <img class="ba-image ba-after"  id="ba-after"  src="" alt="Visualisatie jaloezie" />
+        <div class="ba-divider" id="ba-divider"></div>
+        <div class="ba-handle" id="ba-handle">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="15 18 9 12 15 6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="9 18 15 12 9 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-outline" id="btn-opnieuw">
+          <span>🗑</span> Opnieuw
+        </button>
+        <button class="btn-outline" id="btn-opslaan">
+          <span>💾</span> Opslaan
+        </button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Configuration panel -->
+    <div class="result-right">
+
+      <div class="result-topbar">
+        <div class="avatar avatar-dots" aria-hidden="true">
+          <span><i></i><i></i><i></i></span>
+        </div>
+        <button class="btn-close" id="btn-afsluiten-result" aria-label="Afsluiten">
+          Afsluiten
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
+            <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Error banner (quality check failure) -->
+      <div class="error-banner" id="error-banner"></div>
+
+      <div class="config-body">
+
+        <!-- GEKOZEN KLEUR -->
+        <div class="config-section">
+          <div class="section-label">Gekozen kleur</div>
+          <div class="color-hero" id="color-hero">
+            <img id="color-hero-img" src="" alt="Geselecteerde kleur" />
+            <div class="color-hero-overlay">
+              <div>
+                <div class="color-hero-name" id="color-hero-name">—</div>
+                <div class="color-hero-material" id="color-hero-material">—</div>
+              </div>
+              <button class="btn-kleuren" id="btn-kleuren">
+                Kleuren
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="6 9 12 15 18 9" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="color-cta-links">
+            <a href="#" id="link-kleurstaal-1">Kleurstaal bestellen</a>
+            <a href="#" id="link-jaloezie-1">Jaloezie bestellen</a>
+          </div>
+        </div>
+
+        <!-- ONZE SUGGESTIES -->
+        <div class="config-section">
+          <div class="section-label">Onze suggesties</div>
+          <div class="suggestion-list" id="suggestion-list">
+            <!-- Populated by script.js -->
+          </div>
+        </div>
+
+        <!-- VISUALISEREN (top) -->
+        <div class="config-section config-section--cta-top">
+          <button class="btn-primary" id="btn-visualiseer-top">
+            ✨ Resultaat visualiseren
+          </button>
+        </div>
+
+        <!-- LADDER -->
+        <div class="config-section">
+          <div class="section-label">
+            Ladder
+            <div class="info-icon" title="De laddertape bepaalt het uiterlijk van de koorden">i</div>
+          </div>
+          <div class="radio-group" id="rg-ladder">
+            <label class="radio-item selected" data-value="Ladderband">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Ladderband</span>
+            </label>
+            <label class="radio-item" data-value="Ladderkoord">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Ladderkoord</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- LAMELBREEDTE -->
+        <div class="config-section">
+          <div class="section-label">
+            Lamelbreedte
+            <div class="info-icon" title="De breedte van de lamellen in millimeters">i</div>
+          </div>
+          <div class="radio-group" id="rg-lamel">
+            <label class="radio-item" data-value="25mm">
+              <div class="radio-dot"></div>
+              <span class="radio-label">25mm</span>
+            </label>
+            <label class="radio-item selected" data-value="50mm">
+              <div class="radio-dot"></div>
+              <span class="radio-label">50mm</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- KANTELSTAND -->
+        <div class="config-section">
+          <div class="section-label">
+            Kantelstand
+            <div class="info-icon" title="De stand van de lamellen">i</div>
+          </div>
+          <div class="radio-group" id="rg-kantel">
+            <label class="radio-item selected" data-value="Open">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Open</span>
+            </label>
+            <label class="radio-item" data-value="Gesloten">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Gesloten</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- DAGDEEL -->
+        <div class="config-section">
+          <div class="section-label">
+            Dagdeel
+            <div class="info-icon" title="Het lichtmoment voor de visualisatie">i</div>
+          </div>
+          <div class="radio-group grid-2" id="rg-dagdeel">
+            <label class="radio-item selected" data-value="Ochtend (Koel)">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Ochtend</span>
+            </label>
+            <label class="radio-item" data-value="Middag (Helder)">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Middag</span>
+            </label>
+            <label class="radio-item" data-value="Zonsondergang (Warm)">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Golden hour</span>
+            </label>
+            <label class="radio-item" data-value="Avond (Sfeervol)">
+              <div class="radio-dot"></div>
+              <span class="radio-label">Avond</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- TECHNISCHE RAAMCHECK -->
+        <div class="config-section">
+          <div class="section-label">Technische Raamcheck</div>
+          <dl class="tech-check-table" id="tech-check-table">
+            <dt>Type raam:</dt>    <dd id="tc-type">—</dd>
+            <dt>Plaatsing:</dt>   <dd id="tc-plaatsing">—</dd>
+            <dt>Aantal ramen:</dt><dd id="tc-aantal">—</dd>
+          </dl>
+        </div>
+
+        <!-- BIJZONDERHEDEN PER RAAM -->
+        <div class="config-section">
+          <div class="section-label">Bijzonderheden per raam</div>
+          <dl class="tech-check-table" id="special-table">
+            <dt>Obstakels:</dt>      <dd id="sp-obstakels">—</dd>
+            <dt>Bijzonderheden:</dt> <dd id="sp-bijzonderheden">—</dd>
+          </dl>
+        </div>
+
+        <!-- VISUALISEREN (bottom) -->
+        <div class="config-section config-section--cta-bottom">
+          <button class="btn-primary" id="btn-visualiseer-bottom">
+            ✨ Resultaat visualiseren
+          </button>
+          <div class="color-cta-links color-cta-links--spaced">
+            <a href="#" id="link-kleurstaal-2">Kleurstaal bestellen</a>
+            <a href="#" id="link-jaloezie-2">Jaloezie bestellen</a>
+          </div>
+        </div>
+
+        <!-- STYLE DESCRIPTION -->
+        <div class="config-section config-section--no-border">
+          <p class="style-description" id="style-description"></p>
+        </div>
+
+      </div><!-- /config-body -->
+    </div><!-- /result-right -->
+
+  </section><!-- /page-result -->
+
+</div><!-- /app -->
+
+
+<!-- ══════════════════════════════════════════
+     COLOR FLYOUT / DRAWER
+══════════════════════════════════════════ -->
+<div class="flyout-overlay" id="flyout-overlay">
+  <div class="flyout-panel" id="flyout-panel">
+
+    <div class="flyout-header">
+      <div class="flyout-title">
+        Kies jaloeziekleur
+        <div class="info-icon" title="Kies een kleur uit de Mr. Jealousy collectie">i</div>
+      </div>
+      <button class="btn-close" id="btn-flyout-sluiten" aria-label="Sluiten">
+        Sluiten
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="flyout-material-toggle">
+      <div class="mat-toggle" id="mat-toggle">
+        <label class="radio-item selected" data-value="Aluminium Jaloezieën">
+          <div class="radio-dot"></div>
+          <span class="radio-label">Aluminium</span>
+        </label>
+        <label class="radio-item" data-value="Houten Jaloezieën">
+          <div class="radio-dot"></div>
+          <span class="radio-label">Hout & Bamboe</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="flyout-list" id="flyout-list">
+      <!-- Populated by script.js -->
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

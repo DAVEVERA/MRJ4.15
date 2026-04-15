@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/dave.vera/OneDrive - Autogroep Oostendorp/Bureaublad/MRJ4.15 - kopie/**)",
+      "Bash(done)",
+      "Bash(find \"/c/Users/dave.vera/OneDrive - Autogroep Oostendorp/Bureaublad/Downloads/drive-download-20260326T220452Z-3-001\" -type f -exec ls -lh {})",
+      "Bash(python3 -c \":*)",
+      "Bash(python \"D:/extract_writes.py\")",
+      "Bash(python \"D:/MRJ4.15 - kopie/extract_writes.py\")",
+      "Bash(python \"D:/MRJ4.15 - kopie/extract_sam.py\")",
+      "Bash(npm --version)",
+      "Bash(python app.py)",
+      "Bash(curl -s http://localhost:5000 -o /dev/null -w \"%{http_code}\")",
+      "Bash(pip3 install *)",
+      "Bash(python3 -m venv venv)",
+      "Bash(venv/bin/pip install *)",
+      "Bash(mount)",
+      "Bash(python3 -m venv ~/mrj_venv)",
+      "Bash(~/mrj_venv/bin/pip install *)",
+      "Bash(~/mrj_venv/bin/python app.py)",
+      "Bash(python3 app.py)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/img/speechbubble-logo.png)",
+      "Bash(curl -s http://127.0.0.1:5000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/img/speechbubble-logo.png)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/speechbubble-logo.png)",
+      "Bash(pkill -f \"python app.py\")",
+      "Bash(pkill -f \"flask\")",
+      "Read(//home/davevera/miniconda3/**)",
+      "Read(//home/davevera/anaconda3/**)",
+      "Bash(python3.12 -c \"import flask; print\\(flask.__file__\\)\")",
+      "Bash(python3 -c \"import flask; print\\(flask.__file__\\)\")",
+      "Read(//home/davevera/**)",
+      "Read(//usr/local/lib/**)",
+      "Bash(/home/davevera/mrj_venv/bin/python3 app.py)",
+      "Bash(/home/davevera/mrj_venv/bin/python3 -c \"import anthropic; print\\([x for x in dir\\(anthropic\\) if 'load' in x.lower\\(\\) or 'error' in x.lower\\(\\) or 'Error' in x]\\)\")",
+      "Read(//tmp/**)",
+      "Bash(pkill -f \"mrj_venv/bin/python3\")"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+# Secrets — never commit
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+venv/
+.venv/
+mrj_venv/
+*.egg-info/
+dist/
+build/
+
+# Models (large binaries)
+models/
+
+# Uploads (user data)
+data/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp

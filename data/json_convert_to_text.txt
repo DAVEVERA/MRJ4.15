@@ -1,0 +1,69 @@
+{
+  "qualityFailed": false,
+  "lightingConditions": "Zeer helder, diffuus, koel-neutraal daglicht (circa 5500–6500K) stroomt frontaal door een grote vensternis met ±90% natuurlijk lichtaandeel, gefilterd door een semi-transparant doek, resulterend in een schaduwloze, gelijkmatig verlichte leesnis waar houten jaloezieën het licht warmer en glarvrij zullen terugkaatsen",
+  "colour_palette": [
+    {
+      "hex_code": "#AEC6CF",
+      "extracted_source": "Lichtblauwe bekleding van de vensterbank/zitbank onder het raam",
+      "matched_catalog_color": "Koel Blue"
+    },
+    {
+      "hex_code": "#F7F9EF",
+      "extracted_source": "Witte ingebouwde kasten en planken aan weerszijden van het raam",
+      "matched_catalog_color": "Like RAL9010"
+    },
+    {
+      "hex_code": "#E9E5CE",
+      "extracted_source": "Licht crèmekleurige muuroppervlakken rondom de raamnis",
+      "matched_catalog_color": "Like RAL9002"
+    },
+    {
+      "hex_code": "#808080",
+      "extracted_source": "Grijze decoratieve patronen zichtbaar op het huidige raamscherm/folie",
+      "matched_catalog_color": "Goed Grijs"
+    },
+    {
+      "hex_code": "#FDF4E3",
+      "extracted_source": "Warmwitte ladekasten onder de zitbank met lichte crèmetint",
+      "matched_catalog_color": "Like RAL9001"
+    }
+  ],
+  "windowCheck": {
+    "obstacles": false,
+    "windowType": "Fixed",
+    "detectedWindowCount": 1,
+    "recommendation": "in de dag",
+    "reasoning": "Alle regels groen: binnenbevestiging 10mm vanaf de wandrand (schaduwnaad).",
+    "specialConsiderations": "1) Het raam zit in een diepe architecturale nis met ingebouwde kasten en zitbank — uitsluitend in-de-dag montage is mogelijk. 2) Er is geen vensterbank; de zitbank fungeert als afsluiting aan de onderzijde. 3) Het bestaande rolgordijn en bijbehorende beugels moeten verwijderd worden vóór installatie van een jaloezie. 4) Het ventilatie-/aircorooster boven de nis mag niet geblokkeerd worden door de headrail van de jaloezie. 5) Bij een jaloezie in deze nis moet rekening gehouden worden met de maximale pakketdikte (stack height) bovenin, gezien de beperkte ruimte van ca. 12 cm tussen bovenkant glas en bovenkant nis. 6) Geen hendels, ventilatieroosters of sensoren op het raam zelf gedetecteerd — het raam lijkt volledig vast (fixed). 7) De decoratieve folie op het glas suggereert dat de bewoner privacy wenst; een jaloezie met goede lichtregeling is hier functioneel zeer geschikt."
+  },
+  "materialSuggestions": [
+    "Hout",
+    "Aluminium"
+  ],
+  "suggestions": [
+    {
+      "productType": "Houten Jaloezieën",
+      "material": "Hout",
+      "colorName": "Parel White",
+      "colorHex": "#F5F5F5",
+      "suitabilityScore": 9,
+      "reasoning": "De ingebouwde kasten en kozijnen zijn overwegend zuiver wit. Parel White sluit hier naadloos op aan en houdt de lichte, frisse kinderkamersfeer intact. Houten lamellen bieden warmte en een natuurlijke textuur die past bij de huiselijke leeshoek. De brede vensternis (geschatte breedte circa 140–160 cm) heeft voldoende diepte voor een in-de-dag montage boven de zitbank; de bovenzijde van de nis toont een vlak stuk kozijn van circa 8–10 cm waar de headrail bevestigd kan worden, boven de bestaande raamfolie. Er zijn geen zichtbare handgrepen of ventilatieroosters in het bovenste deel van het raam die de montage belemmeren. Houten lamellen van 50 mm bieden goede lichtregulatie voor een kinderspeelruimte waar zacht, diffuus daglicht gewenst is."
+    },
+    {
+      "productType": "Houten Jaloezieën",
+      "material": "Hout",
+      "colorName": "Haver Milk",
+      "colorHex": "#EFEBD8",
+      "suitabilityScore": 8,
+      "reasoning": "De crèmekleurige accenten rond de nis en de ladekasten neigen naar een warm gebroken wit. Haver Milk pikt deze warmere ondertoon op en creëert een subtiel contrast met de koelere witte kasten, waardoor de jaloezieën als bewust gekozen stijlelement overkomen in plaats van te verdwijnen. Functioneel identiek geschikt: dezelfde in-de-dag montage in de nis, 50 mm lamellen, geen obstakels. Het warme hout versterkt de gezellige leeshoeksfeer en complementeert de zacht-blauwe zitbekleding."
+    },
+    {
+      "productType": "Aluminium Jaloezieën",
+      "material": "Aluminium",
+      "colorName": "Koel Blue",
+      "colorHex": "#AEC6CF",
+      "suitabilityScore": 7,
+      "reasoning": "De lichtblauwe stoffering van de vensterbankzitting is het dominante kleuraccent in de ruimte. Koel Blue aluminium lamellen pikken dit accent op en maken van het raam een samenhangende compositie met de zithoek. Aluminium 25 mm lamellen zijn slanker, waardoor het lichtgewicht, modern en kindvriendelijk oogt. De smalle headrail past makkelijk in de bovenzijde van de nis. Aluminium is daarnaast eenvoudiger schoon te houden in een kinderruimte. Iets lagere score omdat de koele metalen uitstraling minder warmte biedt dan hout in deze intieme leeshoek, maar functioneel en esthetisch een sterke derde keuze."
+    }
+  ]
+}
