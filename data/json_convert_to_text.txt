@@ -1,9 +1,9 @@
 {
   "qualityFailed": false,
-  "style": "Scandinavisch Modern",
-  "styleSummary": "Een lichte, serene ruimte met overwegend witte tinten, minimale decoratie en natuurlijke accenten die typisch zijn voor de Scandinavische ontwerpfilosofie. De brede vensterbank met kussens en het uitzicht op de bergen versterken het gevoel van rust en verbinding met de natuur.",
+  "style": "Scandinavisch Minimalistisch",
+  "styleSummary": "Een lichte, serene ruimte gedomineerd door wit en zachte grijstinten, met een functionele vensternisbank die rust en contemplatieve eenvoud uitstraalt. De afwezigheid van overbodige decoratie, de hoogglans vloer en de subtiele textuurbehang creëren een typisch Scandinavisch gevoel van gecontroleerde kalmte.",
   "roomMood": "Sereen en contemplatief",
-  "lightingConditions": "Sterk natuurlijk daglicht (circa 92% bijdrage) uit zuid/zuidwestelijke richting, overwegend diffuus-zacht met directe zonaccenten door het bovenste raamdeel, kleurtemperatuur rond 5.500K verwarmd door groene vegetatie- en terracottareflecties, met een hoogglans witte vloer die als secundaire lichtbron fungeert — ideale omstandigheden voor houten jaloezieën die het licht dempen zonder harde reflecties te introduceren.",
+  "lightingConditions": "Overwegend sterk natuurlijk daglicht vanuit een groot driedelig raam met roedenverdeling, semi-hard en warm-neutraal van kleur (circa 5.500K), met hoge lichtintensiteit op glasniveau en sterke vloerreflectie op glanzend wit oppervlak — ideaal voor houten jaloezieën die het licht zachter diffuseren en schittering op de reflectieve vloer minimaliseren.",
   "colour_palette": [
     {
       "hex_code": "#F0F0F0",
@@ -16,19 +16,19 @@
       "matched_catalog_color": "Shades of Grey"
     },
     {
-      "hex_code": "#E9E5CE",
-      "extracted_source": "Licht crèmekleurig behang met subtiel patroon op de linkermuur",
-      "matched_catalog_color": "Like RAL9002"
-    },
-    {
       "hex_code": "#F5DEB3",
-      "extracted_source": "Beige/nude kleur van het t-shirt van de persoon",
+      "extracted_source": "Beige/crème t-shirt van de persoon",
       "matched_catalog_color": "Fluffy Naakt"
     },
     {
       "hex_code": "#C2B280",
-      "extracted_source": "Zandkleurig houten balkonhekwerk zichtbaar door het raam",
+      "extracted_source": "Houten oranje-zandkleurige balustrade buiten zichtbaar door het raam",
       "matched_catalog_color": "Mister Sandman"
+    },
+    {
+      "hex_code": "#E9E5CE",
+      "extracted_source": "Licht crème-achtige subtiele patroontint op het behang links van het raam",
+      "matched_catalog_color": "Like RAL9002"
     }
   ],
   "windowCheck": {
@@ -37,7 +37,7 @@
     "detectedWindowCount": 1,
     "recommendation": "op de dag",
     "reasoning": "Obstakel aanwezig en recess te diep; buitenbevestiging verplicht.",
-    "specialConsiderations": "De diepe zitvensterbank (ca. 40 cm) en naar binnen openende draai-kiep sashes maken montage op het glasraam (in-de-dag per sash) de meest praktische optie; buitenom montage op de muur vereist voldoende vrije ruimte boven het kozijn en conflicteert met de inbouwspots."
+    "specialConsiderations": "Bestaande gordijnrail/koof boven het kozijn moet verwijderd of omzeild worden bij op-de-muur montage; de zeer diepe nis (±35 cm) en naar-binnen-openende draai-kiepramen maken in-de-dag montage per afzonderlijk raamvak met spacer-beugels de meest geschikte strategie."
   },
   "materialSuggestions": [
     "Hout",
@@ -50,23 +50,23 @@
       "colorName": "Parel White",
       "colorHex": "#F5F5F5",
       "suitabilityScore": 10,
-      "reasoning": "Dit Scandinavisch moderne interieur wordt gedomineerd door zuiver wit: witte muren, wit plafond, witte vloer en een wit kozijn. Parel White sluit naadloos aan bij het witte kozijnwerk en de overwegend witte ruimte. Houten jaloezieën in deze kleur voegen warmte en textuur toe zonder het serene, lichte karakter te verstoren. Het houtmateriaal geeft een organisch, natuurlijk accent dat past bij de contemplatieve sfeer en de zichtbare groene natuur buiten. De brede vensterbank met zitfunctie vraagt om een lichte, niet-dominante raambekleding die het uitzicht op de bergen respecteert. Montage op het kozijn (opbouwmontage) is aan te raden vanwege de diepe dagkant en het zitgedeelte op de vensterbank. Het driedelige raamkozijn met bovenlichten en roeden wordt optimaal bediend met één doorlopende jaloezie bovenaan de kozijnlijst, zodat de roedenverdeling zichtbaar blijft wanneer de lamellen geopend zijn."
+      "reasoning": "Dit serene, Scandinavisch minimalistische interieur wordt gedomineerd door zuiver wit: witte muren, wit plafond, witte vloer, wit kozijnwerk en een witte vensterbank. Parel White houten jaloezieën sluiten hier naadloos op aan. Het warme, licht gebroken wit van het hout voegt net genoeg textuur en organische warmte toe zonder het strakke kleurenpalet te doorbreken. Het houtmateriaal past bij de contemplatieve sfeer en de zichtbare natuurelementen buiten. Montage op de dagkant of boven de dag is mogelijk; het driedelige raamkozijn met bovenlichten heeft voldoende reveal-diepte. De brede vensterbank met zitkussens vereist montage boven het glas of in de dag, zodat de jaloezieën volledig omhoog kunnen zonder de zitfunctie te belemmeren. Houten lamellen filteren het berglandschap-licht zacht en versterken de serene sfeer."
+    },
+    {
+      "productType": "Houten Jaloezieën",
+      "material": "Hout",
+      "colorName": "Flat White",
+      "colorHex": "#FFFAF0",
+      "suitabilityScore": 9,
+      "reasoning": "Flat White biedt een fractie warmer wit dan Parel White, met een subtiele florale cremigheid die prachtig aansluit bij het licht crèmekleurige behang links van het raam. In een ruimte waar de bewoner bewust kiest voor een toonverschil tussen puur wit en gebroken wit — zichtbaar in de combinatie van strak witte vloer tegenover subtiel gepatroneerd behang — levert Flat White precies die tussentoon. Het houten materiaal zorgt voor natuurlijke warmte en sluit aan bij het organische karakter van de plant, de bergen buiten en de houten buitenbalustrade. De lamellen bieden uitstekende lichtregeling voor het zuidwestelijke licht dat door dit grote raampartij valt."
     },
     {
       "productType": "Houten Jaloezieën",
       "material": "Hout",
       "colorName": "Haver Milk",
       "colorHex": "#EFEBD8",
-      "suitabilityScore": 9,
-      "reasoning": "Haver Milk biedt een subtiel warmere, gebroken witte tint die prachtig harmonieert met het licht crèmekleurige behang op de linkermuur (dicht bij Like RAL9002) en de zachte, neutrale tinten van het interieur. Deze kleur voorkomt een klinisch steriel effect dat puur wit zou kunnen geven en creëert een cozy, Scandinavische warmte. Het houten materiaal voegt een natuurlijke tactiele kwaliteit toe die het contact met de natuur buiten versterkt. De warme ondertoon matcht met de beige zitkussens en de huidskleurige tinten in de ruimte. Bij het driedelige raam met roedenverdeling en bovenlichten biedt deze jaloezie een rustige, uniforme achtergrond die het panoramische bergzicht niet concurreert."
-    },
-    {
-      "productType": "Houten Jaloezieën",
-      "material": "Hout",
-      "colorName": "Gebroken White",
-      "colorHex": "#FDF5E6",
       "suitabilityScore": 8,
-      "reasoning": "Gebroken White vormt een elegant compromis tussen het zuivere wit van de architectuur en de warmere crèmetinten van het behang en de zachte stoffering. Deze tint is iets warmer dan Parel White en geeft de jaloezieën een zacht, uitnodigend karakter dat de serene, contemplatieve sfeer van deze leeshoek-achtige vensterbank versterkt. Het houtmateriaal in Gebroken White reflecteert het overvloedige natuurlijke licht zacht en diffuus, wat belangrijk is bij dit grote, op het zuiden/westen gerichte raam met direct zonlicht. De lamellen bieden precieze lichtregulatie om verblinding te voorkomen terwijl het bergzicht behouden blijft. Opbouwmontage boven het kozijn is noodzakelijk gezien de brede zitvensterbank en de handgrepen op de draairamen."
+      "reasoning": "Haver Milk pakt het zachtste crèmewit uit de catalogus en matcht direct met de subtiele behangkleur (geëxtraheerd als Like RAL9002, hex #E9E5CE) op de muur links van het raam. Deze kleurkeuze creëert een bewuste verbinding tussen de wandafwerking en de raambekleding, wat in Scandinavisch minimalisme een verfijnd designprincipe is. Het geeft net iets meer warmte dan de twee wittere opties, wat mooi contrasteert met het koelere grijs van de zitkussens en de strakke vloer. Het hout voegt tactiele rijkdom toe aan een verder zeer glad en reflecterend interieur. Bij het drieluik-raam met roedes zorgen houten lamellen voor een ritmische herhaling van horizontale lijnen die de bestaande rasterindeling van het kozijn complementeren."
     }
   ]
 }

@@ -346,6 +346,7 @@ MR. JEALOUSY CATALOG (AUTHORITATIVE — DO NOT INVENT OUTSIDE THIS LIST):
 
 OUTPUT OBLIGATION
 Return ONLY valid JSON in Dutch. No markdown. No code fences. No explanation before or after.
+TONE OF VOICE: Be extremely concise, punchy, and highly professional. Avoid all poetic language, fluff, and long essays. Write crisp, commercial copy suitable for a high-end web configurator UI. Maximum 1-2 short sentences per text field unless strictly specified otherwise.
 
 FAIL CONDITIONS — output is wrong if:
   - it suggests a non-catalog product
