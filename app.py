@@ -5,19 +5,19 @@ Mr. Jealousy Interior Intelligence Tool
 Routes:
   GET  /           → serve static/index.html
   POST /analyze    → run phases 1-8 (Claude vision)
-  POST /render     → run phase 9 (Gemini image generation)
+  POST /render     → run phase 9 (Flux.1 Kontext image generation via fal.ai)
 """
 
 import os
 import sys
 import base64
+import urllib.request
 from pathlib import Path
 
+import fal_client
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
-from google import genai
-from google.genai import types as genai_types
 
 # Load .env before anything else so API keys are available
 # whether the app is started via start.bat or directly.
@@ -99,20 +99,18 @@ def render():
     if not image_b64 or not config:
         return jsonify({"error": "Ontbrekende parameters."}), 400
 
-    gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("API_KEY")
-    if not gemini_key:
-        return jsonify({"error": "GEMINI_API_KEY is niet geconfigureerd."}), 500
+    if not os.getenv("FAL_KEY"):
+        return jsonify({"error": "FAL_KEY is niet geconfigureerd."}), 500
 
     try:
-        generated = _run_gemini_render(
+        generated = _run_flux_render(
             image_b64=image_b64,
             config=config,
             mounting=mounting,
             state=state,
             extra=extra,
             analysis=analysis,
-            api_key=gemini_key,
-            quality="full",  # Full HD render
+            quality="full",
         )
         return jsonify({"image": generated})
     except Exception as exc:
@@ -141,20 +139,18 @@ def preview():
     if not image_b64 or not config:
         return jsonify({"error": "Ontbrekende parameters."}), 400
 
-    gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("API_KEY")
-    if not gemini_key:
-        return jsonify({"error": "GEMINI_API_KEY is niet geconfigureerd."}), 500
+    if not os.getenv("FAL_KEY"):
+        return jsonify({"error": "FAL_KEY is niet geconfigureerd."}), 500
 
     try:
-        generated = _run_gemini_render(
+        generated = _run_flux_render(
             image_b64=image_b64,
             config=config,
             mounting=mounting,
             state=state,
             extra=extra,
             analysis=analysis,
-            api_key=gemini_key,
-            quality="preview",  # Low-res preview
+            quality="preview",
         )
         return jsonify({"image": generated})
     except Exception as exc:
@@ -162,22 +158,21 @@ def preview():
         return jsonify({"error": str(exc)}), 500
 
 
-def _run_gemini_render(
+def _run_flux_render(
     image_b64: str,
     config: dict,
     mounting: str,
     state: str,
     extra: dict,
     analysis: dict,
-    api_key: str,
     quality: str = "full",
 ) -> str:
     """
     PROMPT 2 — GENERATION / VISUALIZATION PROMPT
-    Build the render prompt from core.py maps and call Gemini 2.5 Flash.
+    Build the render prompt from core.py maps and call Flux.1 Kontext via fal.ai.
 
-    quality="preview" → lower resolution, faster (~10-15s)
-    quality="full"    → full HD render, slower (~30-45s)
+    quality="preview" → fal-ai/flux-pro/kontext  (~10-20s, guidance 2.5)
+    quality="full"    → fal-ai/flux-pro/kontext/max (~20-40s, guidance 3.5)
     """
     import json as _json
 
@@ -200,177 +195,132 @@ def _run_gemini_render(
         else "No analysis JSON provided — derive window geometry purely from the image."
     )
 
-    # Quality mode guidance
-    quality_note = (
-        "⚡ SPEED PRIORITY (PREVIEW): Optimize for speed (~10-15s). "
-        "Use efficient rendering, lower detail, accept minor approximations."
-        if quality == "preview"
-        else "✅ FULL QUALITY (RENDER): Maximum photorealism, full detail, no compromises. "
-        "This is the final sales-ready image."
-    )
+    # Quality mode: model + guidance scale
+    if quality == "preview":
+        model_id       = core.RENDER_MODEL_FAST
+        guidance_scale = 2.5
+        quality_note   = (
+            "PREVIEW MODE: optimize for speed. Lower detail is acceptable."
+        )
+    else:
+        model_id       = core.RENDER_MODEL
+        guidance_scale = 3.5
+        quality_note   = (
+            "FULL RENDER MODE: maximum photorealism, full detail, no compromises. "
+            "This is the final sales-ready image."
+        )
 
-    prompt = f"""
-You are an Elite Photorealistic Window Treatment Rendering Engine for Mr. Jealousy.
-
-RENDER MODE: {quality_note}
-
-TASK
-Using the uploaded room image and the supplied analysis JSON, create a photorealistic \
-end visualization of the specified Venetian blind installed on the correct window.
-
-You are NOT allowed to redesign the room. You must ONLY remove any existing window covering \
-and insert the new blind as a physically believable architectural object.
+    prompt = f"""Edit this room photograph: remove any existing window covering and install the specified Venetian blind photorealistically on the window. {quality_note}
 
 ABSOLUTE PRODUCT RULES
-Only render:
+Only install:
   Houten Jaloezieën
   Aluminium Jaloezieën
 Never render:
   curtains, roller blinds, pleated blinds, Roman blinds, vertical blinds, any non-horizontal product
 
-SCENE PRESERVATION RULES
+SCENE PRESERVATION — STRICT
   DO NOT repaint walls
   DO NOT recolor frames
   DO NOT change the floor
   DO NOT alter furniture
   DO NOT restyle the room
-  ONLY remove old window coverings if visible
+  ONLY remove old window coverings if visible — reconstruct the bare glass, frame, and outside view underneath
   ONLY insert the new blind
-  Preserve all exposed architecture in original color/material
-  Preserve outside view through open slats where visible
-
-CRITICAL REALISM RULE
-The blind must not look pasted on. It must look manufactured, mounted, and photographed in place.
+  The blind must look manufactured, mounted, and photographed in place — not composited or pasted
 
 ────────────────────────────────────────────────
-ANALYSIS JSON (treat as binding source of truth):
+ANALYSIS JSON (binding source of truth):
 {analysis_block}
 ────────────────────────────────────────────────
 
 STEP 1 — VIRTUAL DEMOLITION
-Detect and fully remove any existing curtain, roller blind, pleated blind, Roman blind, \
-Venetian blind, vertical blind, or other window covering.
-Reconstruct the underlying glass, frame, reveal, and outside view.
-The new blind must NEVER sit on top of an old one.
+Remove any existing curtain, roller blind, pleated blind, Roman blind, Venetian blind, \
+vertical blind, or other window covering. Reconstruct the bare glass, frame, reveal, and \
+outside view. The new blind must never sit on top of an existing one.
 
-STEP 2 — USE JSON AS SOURCE OF TRUTH
-Read the supplied analysis JSON as binding. Prioritize especially:
-  windowCheck (obstacles, glass section count, opening mechanism, mounting recommendation, physical feasibility notes)
-  selected suggestion (productType, material, colorName, colorHex)
-  renderInstructions (all fields)
-  colour_palette
-  lightingConditions
-Do not contradict the JSON unless the image makes a hard correction unavoidable.
-
-STEP 3 — MOUNTING GEOMETRY
+STEP 2 — MOUNTING GEOMETRY
 {mounting_desc}
 
-Never:
-  float the blind unrealistically
-  clip through frame geometry
-  block hardware in an impossible way
-  ignore opening direction or handle clearance
+Never float the blind unrealistically, clip through frame geometry, block hardware \
+impossibly, or ignore opening direction and handle clearance.
 
-STEP 4 — PRODUCT SPECIFICATION
+STEP 3 — PRODUCT SPECIFICATION
 Product:       {product_desc}
 Material:      {config.get('material', '')}
-Color:         {config.get('colorName', '')} (Hex: {config.get('colorHex', '')})
+Color:         {config.get('colorName', '')} (exact hex: {config.get('colorHex', '')})
 Configuration: {slat_desc}, {tape_desc}
 State:         {state_desc}
 
-Product realism requirements:
-  slats perfectly horizontal and parallel
-  equidistant spacing
-  realistic slat thickness
-  realistic headrail dimensions
-  realistic bottom rail dimensions
-  realistic cord/tape logic
-  realistic scale relative to actual window size
-  physically plausible full-drop geometry
-  If ladder tape: render wide decorative vertical fabric tapes, aligned consistently over slats, \
-perspective-correct and physically attached
+Realism requirements:
+  Slats perfectly horizontal and parallel, equidistant, realistic thickness
+  Realistic headrail and bottom rail dimensions
+  Realistic cord/tape geometry — if ladder tape: wide fabric strips aligned \
+  consistently over slats, perspective-correct and physically attached
+  Correct scale relative to the actual window size in the photo
 
-STEP 5 — STATE LOGIC
+STEP 4 — STATE LOGIC
 {state_desc}
-  slats remain parallel and perfectly aligned
-  spacing is rhythmically consistent
-  daylight may filter through slats if not in blackout-closed position
-  create refined striped light behavior where physically appropriate
+  Slats remain parallel and rhythmically consistent
+  Daylight filters through slat gaps where physically appropriate
+  Striped shadow behavior on floor/sill where physically correct
 
-STEP 6 — LIGHTING PHYSICS
+STEP 5 — LIGHTING PHYSICS
 Condition: {lighting_desc}
 
 Shadow rules:
-  inside mount: shadows mainly inside the recess, on sill, and immediate adjacent surfaces
-  outside mount: shadows can fall across wall and floor
-  shadow direction must match actual light angle
-  shadow softness must match selected lighting mode
+  Inside mount: shadows fall inside the recess, on sill, and adjacent surfaces
+  Outside mount: shadows fall across the wall and floor with correct drop direction
+  Shadow direction and softness must match the specified lighting condition exactly
 
-Material rules:
-  aluminium: subtle specular highlights, gentle room reflections, sleek finish
-  wood: visible grain, matte/satin response, warmer absorption of light
+Material physics:
+  Aluminium: subtle specular highlights, gentle room reflections, sleek metallic finish
+  Wood: visible grain texture, matte/satin response, warm light absorption
 
-STEP 7 — PERSPECTIVE AND DEPTH
-  Match the room's vanishing point exactly
-  Respect vertical and horizontal perspective
-  Align blind to the actual frame plane or wall plane
-  Account for recess depth and occlusion by frame edges, handles, sash lines, or recess returns
-  Maintain correct depth hierarchy between blind, frame, glass, and wall
+STEP 6 — PERSPECTIVE AND DEPTH
+  Match the room's vanishing point and perspective exactly
+  Align the blind to the actual frame plane or wall plane in the photo
+  Account for recess depth, frame edges, handles, sash lines, and occlusion
+  Maintain correct depth hierarchy: wall → frame → glass → blind
 
-STEP 8 — FINAL INTEGRATION
-The final image must show:
-  one coherent installed blind
-  original architecture preserved
-  believable interaction with light
-  believable depth and occlusion
-  photorealistic integration without overlay look
+STEP 7 — FINAL INTEGRATION
+The output must show one coherent installed blind with preserved original architecture, \
+believable interaction with light, correct depth and occlusion, and photorealistic \
+integration — indistinguishable from a professional product photograph taken in the room.
 
-FINAL OUTPUT GOAL
-Produce a premium, believable, sales-ready visualization in which the blind looks truly \
-installed in the photographed room.
-
-FAIL CONDITIONS — render is invalid if:
+FAIL CONDITIONS — output is wrong if:
   old coverings remain visible
-  wall/frame/floor/furniture are recolored
-  the blind floats
-  the blind clips unrealistically
-  product type is wrong
-  slats are misaligned
-  shadows contradict the light source
-  perspective is off
-  the blind looks like a flat pasted layer
-  the render ignores mounting logic from the JSON
-""".strip()
+  wall, frame, floor, or furniture are recolored or altered
+  the blind floats or clips unrealistically
+  product type, color, or material is wrong
+  slats are misaligned or non-parallel
+  shadows contradict the specified light source
+  perspective is incorrect
+  the blind looks like a flat layer pasted onto the photo
+  the mounting type contradicts the analysis JSON""".strip()
 
-    # Decode image bytes for the Gemini API
+    # Prepare image as data URI (fal.ai accepts base64 data URIs directly)
     mime_type, raw_b64 = _strip_data_url(image_b64)
-    img_bytes  = base64.b64decode(raw_b64)
+    image_data_uri = f"data:{mime_type};base64,{raw_b64}"
 
-    # Use the new google-genai SDK (google-generativeai is deprecated)
-    client = genai.Client(api_key=api_key)
-
-    image_part = genai_types.Part.from_bytes(data=img_bytes, mime_type=mime_type)
-
-    # response_modalities=["IMAGE"] is mandatory — without it the model returns text only.
-    response = client.models.generate_content(
-        model=core.RENDER_MODEL,
-        contents=[prompt, image_part],
-        config=genai_types.GenerateContentConfig(
-            response_modalities=["IMAGE", "TEXT"],
-        ),
+    # Call fal.ai — fal_client reads FAL_KEY from environment automatically
+    result = fal_client.subscribe(
+        model_id,
+        arguments={
+            "image_url":      image_data_uri,
+            "prompt":         prompt,
+            "guidance_scale": guidance_scale,
+            "num_images":     1,
+            "output_format":  "jpeg",
+        },
     )
 
-    # Extract generated image from response parts
-    if not response.candidates:
-        raise ValueError("Geen candidates in Gemini response.")
+    # Response contains a URL to the generated image — download and return as data URI
+    output_url = result["images"][0]["url"]
+    with urllib.request.urlopen(output_url) as resp:
+        img_bytes = resp.read()
 
-    for part in response.candidates[0].content.parts:
-        if part.inline_data:
-            mime = part.inline_data.mime_type
-            data = part.inline_data.data
-            return f"data:{mime};base64,{base64.b64encode(data).decode()}"
-
-    raise ValueError("Geen afbeelding gegenereerd door Gemini.")
+    return f"data:image/jpeg;base64,{base64.b64encode(img_bytes).decode()}"
 
 
 def _strip_data_url(data_url: str) -> tuple:

@@ -77,7 +77,8 @@ class RenderInstruction(TypedDict):
 PHASE_COUNT       = 9
 ANALYSIS_MODEL    = "claude-opus-4-6"
 FALLBACK_MODEL    = "claude-sonnet-4-6"
-RENDER_MODEL      = "models/gemini-2.5-flash-image"
+RENDER_MODEL      = "fal-ai/flux-pro/kontext/max"   # full render
+RENDER_MODEL_FAST = "fal-ai/flux-pro/kontext"       # preview (faster, slightly lower quality)
 UPLOAD_PATH       = "data/uploads"
 JSON_CACHE_PATH   = "data/json_convert_to_text.txt"
 ANALYSE_JSON_PATH = "data/analyse.json"
@@ -181,18 +182,6 @@ MR_JEALOUSY_CATALOG: Dict[str, List[ProductColor]] = {
 
 # ── DESCRIPTOR MAPS (migrated verbatim from TypeScript) ────────────────────────
 
-STATE_MAP: Dict[str, str] = {
-    "Tot de helft": (
-        "lowered exactly halfway. The bottom 50% of the window is clear glass allowing "
-        "direct sunlight to hit the floor/sill. The top 50% is covered by the blind, "
-        "casting slat shadows."
-    ),
-    "Geheel uitgerold": (
-        "fully lowered, covering the entire window height from top to bottom. The light "
-        "entering the room is filtered through the slats, creating a soft striped shadow "
-        "pattern on the floor/interior."
-    ),
-}
 
 MOUNTING_MAP: Dict[str, str] = {
     "in de dag": (

@@ -37,7 +37,13 @@
       "Bash(/home/davevera/mrj_venv/bin/python3 app.py)",
       "Bash(/home/davevera/mrj_venv/bin/python3 -c \"import anthropic; print\\([x for x in dir\\(anthropic\\) if 'load' in x.lower\\(\\) or 'error' in x.lower\\(\\) or 'Error' in x]\\)\")",
       "Read(//tmp/**)",
-      "Bash(pkill -f \"mrj_venv/bin/python3\")"
+      "Bash(pkill -f \"mrj_venv/bin/python3\")",
+      "Bash(gh pr *)",
+      "WebFetch(domain:fal.ai)",
+      "WebFetch(domain:docs.fal.ai)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "WebFetch(domain:apidog.com)"
     ]
   }
 }

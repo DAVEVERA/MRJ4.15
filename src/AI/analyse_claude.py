@@ -6,7 +6,8 @@ Imports all laws and constants from core.py — never defines its own.
 
 Phase gate:
   Phase 2 (quality check) can abort the pipeline early and return an error response.
-  All other phases run in sequence and accumulate context.
+  Phases 3, 4, 5, 7 run concurrently (all image-only, mutually independent).
+  Phase 8 runs after, using outputs of 3, 4 and 7 as context.
 """
 
 import os
@@ -14,9 +15,10 @@ import json
 import logging
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import anthropic
+from concurrent.futures import ThreadPoolExecutor
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -25,6 +27,8 @@ import core
 from src.AI.utils import write_json_cache, strip_data_url
 
 logger = logging.getLogger(__name__)
+
+_PROMPT_SEP = "─" * 60  # separator produced by core.get_phase_prompt() — used for cache split
 
 
 # ── CLAUDE CLIENT ───────────────────────────────────────────────
@@ -44,23 +48,45 @@ def _call_claude_vision(
     image_b64: str,
     image_mime: str,
     user_message: str,
+    model: Optional[str] = None,
 ) -> str:
     """
     Send a single vision request to Claude.
-    Automatically falls back to FALLBACK_MODEL if the primary model is overloaded.
+    - model=None  → uses ANALYSIS_MODEL (Opus) with FALLBACK_MODEL (Sonnet) on overload.
+    - model=X     → uses X only, no fallback (for phases where Sonnet is sufficient).
+    The static base of the system prompt is marked for prompt caching, which reduces
+    token-processing overhead on repeated calls within the same session.
     Returns the raw text response (expected to be JSON).
     """
-    models_to_try = [core.ANALYSIS_MODEL, core.FALLBACK_MODEL]
+    models_to_try = [model] if model else [core.ANALYSIS_MODEL, core.FALLBACK_MODEL]
 
-    for model in models_to_try:
+    # Split system prompt into cacheable static base and phase-specific suffix.
+    # The separator line (─────) is the natural split point produced by get_phase_prompt().
+    if _PROMPT_SEP in system_prompt:
+        idx = system_prompt.index(_PROMPT_SEP)
+        system_content: Any = [
+            {
+                "type": "text",
+                "text": system_prompt[:idx].rstrip(),
+                "cache_control": {"type": "ephemeral"},
+            },
+            {
+                "type": "text",
+                "text": system_prompt[idx:],
+            },
+        ]
+    else:
+        system_content = system_prompt  # fallback: plain string (e.g. phase 2 simple prompt)
+
+    for m in models_to_try:
         try:
-            if model != core.ANALYSIS_MODEL:
-                logger.warning("claude-opus-4-6 overloaded — falling back to %s", model)
+            if m != models_to_try[0]:
+                logger.warning("%s overloaded — falling back to %s", models_to_try[0], m)
 
             response = client.messages.create(
-                model=model,
+                model=m,
                 max_tokens=4096,
-                system=system_prompt,
+                system=system_content,
                 messages=[
                     {
                         "role": "user",
@@ -83,16 +109,15 @@ def _call_claude_vision(
             )
 
             if not response.content:
-                raise ValueError(f"Empty response received from model {model}.")
+                raise ValueError(f"Empty response received from model {m}.")
 
             return response.content[0].text.strip()
 
         except (anthropic.InternalServerError, anthropic.RateLimitError):
-            if model == core.FALLBACK_MODEL:
-                raise  # both models overloaded — propagate
-            continue   # try fallback
+            if m == models_to_try[-1]:
+                raise  # all options exhausted — propagate
+            continue   # try next model
 
-    # Unreachable, but satisfies type checkers
     raise RuntimeError("All models failed.")
 
 
@@ -122,13 +147,30 @@ def _phase_2_quality(client, image_b64, image_mime) -> Dict[str, Any]:
         "Geef je antwoord als geldig JSON object met de volgende structuur:\n"
         '{"passed": true/false, "feedback": "feedback tekst als failed, anders leeg string"}'
     )
-    raw    = _call_claude_vision(client, system, image_b64, image_mime, user)
+    # Sonnet is voldoende voor deze binaire ja/nee check — sneller dan Opus.
+    raw    = _call_claude_vision(client, system, image_b64, image_mime, user,
+                                 model=core.FALLBACK_MODEL)
     result = _parse_json(raw, phase=2)
     return {
         "passed":   bool(result.get("passed", False)),
         "feedback": result.get("feedback", ""),
     }
 
+
+def _phase_3_style(client, image_b64, image_mime) -> Dict[str, Any]:
+    """Phase 3: Extract interior thesis — style, mood, luxury level, material language."""
+    system = core.get_phase_prompt(3)
+    user   = (
+        "Analyseer de interieurstijl van deze ruimte. "
+        "Geef je antwoord als geldig JSON object:\n"
+        '{"style": "één stijllabel (bijv. Japandi, Industrial, Hotel Chic)", '
+        '"styleSummary": "Maximaal 2 zinnen.", '
+        '"styleDescription": "Minimaal 200 woorden in het Nederlands. '
+        'Één alinea per kop, één witregel tussen elke alinea.", '
+        '"roomMood": "één woord of korte zin die de sfeer van de ruimte beschrijft"}'
+    )
+    raw = _call_claude_vision(client, system, image_b64, image_mime, user)
+    return _parse_json(raw, phase=3)
 
 
 def _phase_4_colors(client, image_b64, image_mime) -> Dict[str, Any]:
@@ -275,20 +317,26 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
         write_json_cache(result)
         return result
 
-    # ── PHASE 4: Color DNA ─────────────────────────────────────
-    colors = _phase_4_colors(client, image_b64, image_mime)
+    # ── PHASES 3, 4, 5, 7: run concurrently ──────────────────
+    # All four only need the image and are mutually independent.
+    # Total wall time = max(3, 4, 5, 7) instead of their sum.
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        f3 = executor.submit(_phase_3_style,    client, image_b64, image_mime)
+        f4 = executor.submit(_phase_4_colors,   client, image_b64, image_mime)
+        f5 = executor.submit(_phase_5_window,   client, image_b64, image_mime)
+        f7 = executor.submit(_phase_7_lighting, client, image_b64, image_mime)
+        style    = f3.result()
+        colors   = f4.result()
+        window   = f5.result()
+        lighting = f7.result()
 
-    # ── PHASE 5: Window architecture ──────────────────────────
-    window = _phase_5_window(client, image_b64, image_mime)
-
-    # ── PHASE 6: Mounting strategy (pure logic) ────────────────
+    # ── PHASE 6: Mounting strategy (pure logic, no API call) ──
     mounting = _phase_6_mounting(window)
-
-    # ── PHASE 7: Lighting conditions ───────────────────────────
-    lighting = _phase_7_lighting(client, image_b64, image_mime)
 
     # ── PHASE 8: Catalog match ─────────────────────────────────
     context = {
+        "style":               style.get("style", ""),
+        "roomMood":            style.get("roomMood", ""),
         "colour_palette":      colors.get("colour_palette", []),
         "recommendedMaterial": lighting.get("recommendedMaterial", ""),
     }
@@ -306,6 +354,10 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
 
     result = {
         "qualityFailed":       False,
+        "style":               style.get("style", ""),
+        "styleSummary":        style.get("styleSummary", ""),
+        "styleDescription":    style.get("styleDescription", ""),
+        "roomMood":            style.get("roomMood", ""),
         "lightingConditions":  lighting.get("lightingConditions", ""),
         "colour_palette":      colors.get("colour_palette", []),
         "windowCheck":         window_check,
