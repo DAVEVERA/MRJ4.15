@@ -222,6 +222,7 @@ async function renderVisualization() {
     material:     APP.selectedColor.material,
     colorName:    APP.selectedColor.name,
     colorHex:     APP.selectedColor.hex,
+    sampleUrl:    APP.selectedColor.sampleUrl || '',
   };
 
   const extraOptions = {
@@ -546,6 +547,7 @@ async function generatePreview() {
     material:     APP.selectedColor.material,
     colorName:    APP.selectedColor.name,
     colorHex:     APP.selectedColor.hex,
+    sampleUrl:    APP.selectedColor.sampleUrl || '',
   };
 
   const extraOptions = {

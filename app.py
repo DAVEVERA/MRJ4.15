@@ -11,6 +11,7 @@ Routes:
 import os
 import sys
 import base64
+import urllib.request
 from pathlib import Path
 
 from google import genai
@@ -30,6 +31,10 @@ import core
 from src.AI.analyse_claude import run_analysis_pipeline
 from src.AI.utils import save_upload_locally, upload_to_supabase
 from src.AI.sam2_segment import detect_window_bounds
+from src import refs as ref_images
+
+# Pre-generate reference images at startup
+ref_images.generate_all()
 
 
 # ── APP SETUP ───────────────────────────────────────────────────
@@ -43,6 +48,12 @@ CORS(app)
 @app.route("/")
 def index():
     return send_from_directory("static", "index.html")
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory("static", "favicon.ico") if \
+        (ROOT / "static" / "favicon.ico").exists() else ("", 204)
 
 
 # ── PHASE 1-8: ANALYZE ──────────────────────────────────────────
@@ -300,18 +311,64 @@ Photorealistic, sales-ready visualization. The blind looks truly installed in th
 Color, ladder type, slat angle, and mounting must be exactly as specified — no exceptions.
 """.strip()
 
-    # Decode image bytes for the Gemini API
+    # Decode and resize the room image (Gemini rejects oversized inputs)
     mime_type, raw_b64 = _strip_data_url(image_b64)
     img_bytes = base64.b64decode(raw_b64)
+    img_bytes  = _resize_image(img_bytes, max_px=1536)
 
     model_id = core.RENDER_MODEL_FAST if quality == "preview" else core.RENDER_MODEL
 
     client = genai.Client(api_key=api_key)
-    image_part = genai_types.Part.from_bytes(data=img_bytes, mime_type=mime_type)
+    room_part = genai_types.Part.from_bytes(data=img_bytes, mime_type="image/jpeg")
 
+    # ── Build reference image parts ───────────────────────────────
+    def _ref_part(filename: str) -> genai_types.Part:
+        data, mime = ref_images.load(filename)
+        return genai_types.Part.from_bytes(data=data, mime_type=mime)
+
+    def _url_part(url: str) -> genai_types.Part | None:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=6) as r:
+                raw = r.read()
+                ct  = r.headers.get_content_type() or "image/png"
+            return genai_types.Part.from_bytes(data=raw, mime_type=ct)
+        except Exception:
+            return None
+
+    # ── Assemble contents ─────────────────────────────────────────
+    # Preview: lean call (prompt + room only) for speed/reliability.
+    # Full render: reference images prepended so model sees exact specs.
+    contents: list = []
+
+    if quality == "full":
+        ladder_ref = _ref_part("ref_ladderband.png" if ladder_tape else "ref_ladderkoord.png")
+        kantel_ref = _ref_part("ref_halfopen.png" if state == "Tot de helft" else "ref_gesloten.png")
+        slat_ref   = _ref_part("ref_slats_25mm.png" if slat_width == "25mm" else "ref_slats_50mm.png")
+        swatch     = _url_part(config.get("sampleUrl", ""))
+
+        ladder_label = "LADDERBAND (wide fabric tapes ~5cm)" if ladder_tape else "LADDERKOORD (thin cords ~3mm, NO fabric tapes)"
+        contents += [
+            f"REF 1 — LADDER TYPE ({ladder_label}): copy this construction exactly.",
+            ladder_ref,
+            f"REF 2 — KANTELSTAND ({state}): copy this exact slat angle.",
+            kantel_ref,
+            f"REF 3 — SLAT WIDTH ({slat_width}): copy these proportions.",
+            slat_ref,
+        ]
+        if swatch:
+            contents += [
+                f"REF 4 — COLOR SWATCH for '{config.get('colorName', '')}' "
+                f"(hex {config.get('colorHex', '')}): match this color exactly on all slats.",
+                swatch,
+            ]
+
+    contents += [prompt, room_part]
+
+    client   = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model=model_id,
-        contents=[prompt, image_part],
+        contents=contents,
         config=genai_types.GenerateContentConfig(
             response_modalities=["IMAGE", "TEXT"],
         ),
@@ -320,13 +377,32 @@ Color, ladder type, slat angle, and mounting must be exactly as specified — no
     if not response.candidates:
         raise ValueError("Geen candidates in Gemini response.")
 
-    for part in response.candidates[0].content.parts:
+    candidate = response.candidates[0]
+    if candidate.content is None:
+        fr = getattr(candidate, "finish_reason", "UNKNOWN")
+        raise ValueError(f"Gemini response geblokkeerd. finish_reason={fr}")
+
+    for part in candidate.content.parts:
         if part.inline_data:
             mime = part.inline_data.mime_type
             data = part.inline_data.data
             return f"data:{mime};base64,{base64.b64encode(data).decode()}"
 
-    raise ValueError("Geen afbeelding gegenereerd door Gemini.")
+    raise ValueError("Geen afbeelding in Gemini response.")
+
+
+def _resize_image(img_bytes: bytes, max_px: int = 1536) -> bytes:
+    """Resize image so the longest side ≤ max_px; re-encode as JPEG."""
+    import io
+    from PIL import Image as _Img
+    img = _Img.open(io.BytesIO(img_bytes)).convert("RGB")
+    w, h = img.size
+    if max(w, h) > max_px:
+        scale = max_px / max(w, h)
+        img = img.resize((int(w * scale), int(h * scale)), _Img.LANCZOS)
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=90)
+    return buf.getvalue()
 
 
 def _strip_data_url(data_url: str) -> tuple:
