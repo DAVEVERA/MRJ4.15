@@ -50,7 +50,15 @@
       "Bash(/home/davevera/.mrj3-venv/bin/pip install *)",
       "Bash(/home/davevera/.mrj3-venv/bin/python -c \"import app\")",
       "Bash(/home/davevera/.mrj3-venv/bin/python app.py)",
-      "Bash(curl -s http://localhost:5000)"
+      "Bash(curl -s http://localhost:5000)",
+      "Bash(curl -s -X POST http://localhost:5000/preview -H \"Content-Type: application/json\" -d '{\"image\":\"data:image/jpeg;base64,/9j/4A==\",\"config\":{\"productType\":\"Houten Jaloezieën\"},\"mounting\":\"in de dag\",\"state\":\"Tot de helft\"}')",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s http://localhost:5000/)",
+      "Bash(curl -s -X POST http://localhost:5000/preview -H 'Content-Type: application/json' -d '{\"image\":\"data:image/jpeg;base64,/9j/4AAQSkZJRg==\",\"config\":{\"productType\":\"Houten Jaloezieën\",\"colorName\":\"Wit\",\"colorHex\":\"#FFFFFF\",\"material\":\"Hout\"},\"mounting\":\"in de dag\",\"state\":\"Tot de helft\",\"extraOptions\":{\"lighting\":\"Middag \\(Helder\\)\",\"ladderTape\":true,\"slatWidth\":\"50mm\"}}')",
+      "Bash(pkill -f \"mrj3-venv.*app.py\")",
+      "Bash(/home/davevera/.mrj3-venv/bin/pip list *)",
+      "Bash(/home/davevera/.mrj3-venv/bin/pip show *)",
+      "Bash(echo \"PID=$!\")"
     ]
   }
 }

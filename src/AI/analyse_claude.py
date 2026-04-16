@@ -165,8 +165,6 @@ def _phase_3_style(client, image_b64, image_mime) -> Dict[str, Any]:
         "Geef je antwoord als geldig JSON object:\n"
         '{"style": "één stijllabel (bijv. Japandi, Industrial, Hotel Chic)", '
         '"styleSummary": "Maximaal 2 zinnen.", '
-        '"styleDescription": "Minimaal 200 woorden in het Nederlands. '
-        'Één alinea per kop, één witregel tussen elke alinea.", '
         '"roomMood": "één woord of korte zin die de sfeer van de ruimte beschrijft"}'
     )
     raw = _call_claude_vision(client, system, image_b64, image_mime, user)
@@ -356,7 +354,6 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
         "qualityFailed":       False,
         "style":               style.get("style", ""),
         "styleSummary":        style.get("styleSummary", ""),
-        "styleDescription":    style.get("styleDescription", ""),
         "roomMood":            style.get("roomMood", ""),
         "lightingConditions":  lighting.get("lightingConditions", ""),
         "colour_palette":      colors.get("colour_palette", []),

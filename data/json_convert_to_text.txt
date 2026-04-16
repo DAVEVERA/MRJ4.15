@@ -1,44 +1,43 @@
 {
   "qualityFailed": false,
   "style": "Scandinavisch Minimalistisch",
-  "styleSummary": "Een lichte, serene ruimte die Scandinavische eenvoud combineert met een contemplatieve, bijna meditatieve sfeer. De overwegend witte en grijze kleurpaletten, de grote raampartij met zitvensterbank en de bewuste leegte creëren een rustgevend toevluchtsoord met uitzicht op de natuur.",
-  "styleDescription": "STIJL\nDeze ruimte is een schoolvoorbeeld van Scandinavisch minimalisme in zijn zuiverste vorm. De esthetiek draait om het principe van 'minder is meer', waarbij elk element in de kamer een bewuste keuze lijkt. De algehele indruk is die van een licht, luchtig en ongecompliceerd interieur dat volledig gericht is op rust en welzijn. Er is geen enkele overbodige decoratie zichtbaar — de ruimte ademt stilte en intentionaliteit.\n\nKLEUR EN LICHT\nHet kleurenpalet is strikt tonaal gehouden: overheersend wit op de muren, het plafond, de vloer en de vensterbank, aangevuld met zachte grijstinten in de zitkussens en het vloerkleed. De hoogglans witte vloer reflecteert het overvloedige natuurlijke licht dat door de imposante raampartij binnenstroomt, waardoor de ruimte nog groter en helderder aanvoelt. Het daglicht is hier de belangrijkste lichtbron en architecturaal statement tegelijk. De subtiele, bijna onzichtbare wandbekleding heeft een licht patroon dat textuur toevoegt zonder visuele ruis te veroorzaken.\n\nMATERIAALTAAL\nDe dominante materialen zijn geschilderd hout in de vensterbank en kozijnen, een gepolijste of gegoten vloer met hoge reflectiegraad, en zachte katoenen of linnen stoffen in de kussens. De witte plantenbak in beton of composiet rechts naast het raam voegt een organisch-industrieel accent toe. De kamerplant — een ficus — brengt het enige kleuraccent van betekenis: levend groen dat de verbinding legt tussen het interieur en het weelderige berglandschap buiten.\n\nLIJNTAAL EN GEOMETRIE\nDe lijntaal is overwegend horizontaal en verticaal, streng rechthoekig. De raamverdeling met roeden creëert een rasterstructuur die doet denken aan klassieke Europese architectuur, maar de strakke afwerking trekt het geheel naar een moderne context. De brede vensterbank fungeert als zitmeubel — een typisch Scandinavisch concept dat functionaliteit en gezelligheid combineert. De plafondspots zijn ingebouwd en onopvallend, wat de minimalistische lijn consequent doortrekt.\n\nRUIMTELIJKE DICHTHEID EN LUXE\nDe ruimtelijke dichtheid is bewust laag gehouden. Er is veel vloeroppervlak zichtbaar, weinig meubels, en de enige objecten in beeld zijn functioneel of organisch. Het luxeniveau is subtiel maar aanwezig: de hoogglans vloer, de kwaliteit van de kozijnen, de ruime plafondhoogte en de doordachte leegte wijzen op een weldoordacht, kwalitatief hoogwaardig interieur. Dit is geen kale ruimte bij gebrek aan middelen — het is bewuste reductie als designstatement.\n\nWARMTE EN KOELTE\nDe ruimte neigt naar een koele temperatuur qua kleur, maar de zachte kussens, het zachte vloerkleed en het warme daglicht dat door de ramen valt, brengen net genoeg warmte om het geheel uitnodigend te houden. De balans tussen koel wit en warm natuurlijk licht is precies wat deze stijl zo succesvol maakt.",
+  "styleSummary": "Een lichte, serene ruimte die gedomineerd wordt door wit en zachte grijstinten, met een functionele vensternisbank die doet denken aan Scandinavische eenvoud. De grote raampartij met roede-indeling, subtiel bloemenbehang en de enkele groene plant zorgen voor een kalme, ongecompliceerde atmosfeer.",
   "roomMood": "Sereen en contemplatief",
-  "lightingConditions": "Heldere, overwegend diffuus-zachte daglichtsituatie met circa 95% natuurlijke bijdrage rond 5.500K, sterke instraling door een groot driedelig raam met roedeverdeling, groene kleurkleuring door bergvegetatie, harde reflecties op de hoogglans vloer, en uitgeschakelde kunstverlichting – ideaal voor houten jaloezieën die het licht warm filteren zonder ongewenste spiegeling",
+  "lightingConditions": "Overwegend sterk, zacht-diffuus natuurlijk daglicht (±92% natuurlijk, ±8% kunstmatig via twee inbouwspots) dat frontaal door een groot driedelig raam binnenkomt bij een geschatte kleurtemperatuur van 5.200–5.800K, met zachte schaduwvorming en significante secundaire reflectie via de hoogglans witte vloer — ideale omstandigheden voor houten jaloezieën die het licht warm en gecontroleerd filteren zonder ongewenste harde glansreflecties.",
   "colour_palette": [
     {
       "hex_code": "#F0F0F0",
       "extracted_source": "Witte muren en plafond van de kamer",
-      "matched_catalog_color": "Parel White"
+      "matched_catalog_color": "Like RAL9016"
     },
     {
-      "hex_code": "#B0B0B0",
+      "hex_code": "#808080",
       "extracted_source": "Grijze zitkussens op de vensterbank",
-      "matched_catalog_color": "Goed Grijs"
+      "matched_catalog_color": "Shades of Grey"
     },
     {
-      "hex_code": "#E8E0D0",
-      "extracted_source": "Crèmekleurig T-shirt van de persoon",
-      "matched_catalog_color": "Like RAL9001"
+      "hex_code": "#E3BC9A",
+      "extracted_source": "Beige/huidskleurig t-shirt van de persoon",
+      "matched_catalog_color": "Soft Naakt"
     },
     {
-      "hex_code": "#C87840",
-      "extracted_source": "Oranje-bruine houten balkonhekwerk buiten het raam",
+      "hex_code": "#B87333",
+      "extracted_source": "Oranje/koperkleurig houten balkonhek zichtbaar door het raam",
       "matched_catalog_color": "Koffie Koper"
     },
     {
-      "hex_code": "#6B8E50",
-      "extracted_source": "Groen bladerdek van de bomen op de heuvels buiten",
-      "matched_catalog_color": "Bonsai Bamboo"
+      "hex_code": "#D2B48C",
+      "extracted_source": "Licht naturel kleur van de houten vensterbank en vloer",
+      "matched_catalog_color": "De Naturist"
     }
   ],
   "windowCheck": {
     "obstacles": true,
-    "windowType": "Multi-pane vast met draaikiepdelen",
+    "windowType": "Multi-pane vast met draai-kiep vleugels",
     "detectedWindowCount": 1,
     "recommendation": "op de dag",
     "reasoning": "Obstakel aanwezig en recess te diep; buitenbevestiging verplicht.",
-    "specialConsiderations": "Bestaande ophangrail/cassette zichtbaar boven het kozijn moet verwijderd of geïntegreerd worden vóór montage van een nieuwe headrail; de diepe nis (±35 cm) en brede zitvensterbank maken in-de-dag montage ideaal, maar draai-kiepvleugels openen naar binnen en vereisen minimaal 6 cm vrije ruimte tussen lamelpakket en glas."
+    "specialConsiderations": "Naar-binnen-draaiende vleugels maken in-de-dag montage over de volle breedte onmogelijk; ofwel op-de-dag montage boven het kozijn met voldoende uitval, ofwel per glasvlak aparte jaloezieën met klemsteunen op het draai-kiep raam monteren om draai-functie te behouden."
   },
   "materialSuggestions": [
     "Hout",
@@ -50,24 +49,24 @@
       "material": "Hout",
       "colorName": "Parel White",
       "colorHex": "#F5F5F5",
-      "suitabilityScore": 10,
-      "reasoning": "Dit Scandinavisch minimalistische interieur wordt gedomineerd door wit: witte muren, wit plafond, witte vloer en wit kozijnwerk. Parel White houten jaloezieën sluiten naadloos aan bij het bestaande kozijn en de algehele kleurbalans. Het houtmateriaal voegt net genoeg warmte en textuur toe aan de serene, contemplatieve sfeer zonder visuele verstoring. De brede vensterbank-zitplek blijft het focuspunt terwijl de jaloezie als architecturaal verlengstuk van het kozijn functioneert. Hout dempt het sterke daglicht dat via het berglandschap naar binnen valt op een zachte, natuurlijke manier."
+      "suitabilityScore": 9,
+      "reasoning": "Dit Scandinavisch minimalistische interieur wordt gedomineerd door witte muren, een wit plafond en een lichte vloer. Parel White sluit naadloos aan bij het strakke witte kozijn en het serene kleurenpalet zonder visueel contrast toe te voegen, wat de contemplatieve sfeer intact houdt. Het houtmateriaal voegt net genoeg warmte en textuur toe aan het raam en past bij de natuurlijke uitstraling van de brede vensterbank met zitkussens. De brede driedelige raampartij met roeden vraagt om een materiaal dat niet klinisch aanvoelt — hout biedt die organische zachtheid."
     },
     {
       "productType": "Houten Jaloezieën",
       "material": "Hout",
       "colorName": "Flat White",
       "colorHex": "#FFFAF0",
-      "suitabilityScore": 9,
-      "reasoning": "Flat White biedt een fractie warmere tint dan Parel White en creëert daarmee een subtiel contrast met de koelwitte muren terwijl het perfect harmoniëert met het crèmekleurige textiel in de kamer. Het houten materiaal past bij de Scandinavische voorkeur voor natuurlijke materialen. De warme ondertoon van Flat White vangt het buitenlicht op en verspreidt het zacht door de kamer, wat de contemplatieve sfeer versterkt. Montage boven het kozijn (op de muur) is aan te raden gezien de breedte van het driedelige raam met bovenlichten en de aanwezige gordijnrail."
+      "suitabilityScore": 8,
+      "reasoning": "Flat White biedt een fractie warmere wittint dan Parel White, wat mooi resoneert met het zachte natuurlijke licht dat door het berglandschap naar binnen valt. De iets romige ondertoon harmonieert met de lichtbeige tinten van de vensterbank en het t-shirt van de persoon, en voorkomt een kil-wit effect. Houten lamellen in deze tint integreren elegant met de bestaande witte kozijnprofielen en roedenverdeling van dit driedelige raam, terwijl ze de minimalistische esthetiek respecteren."
     },
     {
       "productType": "Houten Jaloezieën",
       "material": "Hout",
-      "colorName": "Haver Milk",
-      "colorHex": "#EFEBD8",
-      "suitabilityScore": 8,
-      "reasoning": "Haver Milk voegt een warme, havermelkachtige toon toe die het crèmekleurige T-shirt en het subtiele behangpatroon op de muren weerspiegelt. Dit creëert een gelaagd, toonzuiver kleurverhaal binnen het minimalistische palet. Het houten materiaal past bij de organische Scandinavische esthetiek en de groene plant rechts. De iets zandige warmte breekt de dominante witheid net genoeg om diepte te geven zonder de sereniteit te verstoren. De lamellen filteren het sterke berglicht tot een zacht, diffuus schijnsel dat de vensterbank-zitplek nog uitnodigender maakt."
+      "colorName": "De Naturist",
+      "colorHex": "#D2B48C",
+      "suitabilityScore": 7,
+      "reasoning": "Voor wie een warmere, meer aardse uitstraling prefereert: De Naturist pikt de naturel houtkleur op die al zichtbaar is in de vensterbank en vloer. Deze kleur creëert een subtiel contrast met de witte kozijnen en voegt diepte toe zonder het serene karakter te verstoren. Het koppelt visueel aan het houten balkonhek buiten en de groene bergomgeving, waardoor de verbinding tussen binnen en buiten wordt versterkt. Bij een breed raam als dit — drie secties met bovenlichten en roeden — geeft een warme houttint karakter zonder de lichte ruimte te overweldigen."
     }
   ]
 }

@@ -77,8 +77,8 @@ class RenderInstruction(TypedDict):
 PHASE_COUNT       = 9
 ANALYSIS_MODEL    = "claude-opus-4-6"
 FALLBACK_MODEL    = "claude-sonnet-4-6"
-RENDER_MODEL      = "fal-ai/flux-pro/kontext/max"   # full render
-RENDER_MODEL_FAST = "fal-ai/flux-pro/kontext"       # preview (faster, slightly lower quality)
+RENDER_MODEL      = "gemini-3.1-flash-image-preview"   # full render — best quality
+RENDER_MODEL_FAST = "gemini-2.5-flash-image"           # preview — faster
 UPLOAD_PATH       = "data/uploads"
 JSON_CACHE_PATH   = "data/json_convert_to_text.txt"
 ANALYSE_JSON_PATH = "data/analyse.json"
@@ -252,6 +252,27 @@ PRODUCT_MAP: Dict[str, str] = {
         "Sleek Aluminum Horizontal Venetian Blinds. "
         "Material physics: Smooth metallic finish, slight specular highlights, "
         "reflects light, cool/sharp reflections."
+    ),
+}
+
+STATE_MAP: Dict[str, str] = {
+    "Tot de helft": (
+        "KANTELSTAND: HALF OPEN. "
+        "The blind is fully lowered (bottom rail hangs at sill level). "
+        "Slat angle: exactly 45° tilt — each slat is angled so you can see daylight and the outside "
+        "view through the gaps between slats. "
+        "Visible result: clear alternating light/dark horizontal bands across the entire blind. "
+        "The gaps between slats must be clearly visible. "
+        "DO NOT render slats as fully closed or flat — they must be visibly tilted at 45°."
+    ),
+    "Geheel uitgerold": (
+        "KANTELSTAND: VOLLEDIG GESLOTEN. "
+        "The blind is fully lowered (bottom rail hangs at sill level). "
+        "Slat angle: completely horizontal/flat — slats are rotated to fully overlap each other, "
+        "blocking all view and light. "
+        "Visible result: tight, uniform rows of parallel horizontal slats with no visible gaps. "
+        "The blind surface looks solid and opaque. "
+        "DO NOT render any gaps or light passing through — slats are fully closed."
     ),
 }
 

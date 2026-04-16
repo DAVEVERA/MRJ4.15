@@ -231,7 +231,7 @@ async function renderVisualization() {
   };
 
   const mounting = APP.analysisResult?.windowCheck?.recommendation || 'in de dag';
-  const state    = getSelected('rg-kantel') === 'Open' ? 'Tot de helft' : 'Geheel uitgerold';
+  const state    = getSelected('rg-kantel') === 'Half open' ? 'Tot de helft' : 'Geheel uitgerold';
 
   try {
     const resp = await fetch('/render', {
@@ -298,9 +298,6 @@ function populateResult(result) {
   document.getElementById('sp-obstakels').textContent     = wc.obstacles ? 'Ja' : 'Nee';
   document.getElementById('sp-bijzonderheden').textContent = wc.specialConsiderations || '—';
 
-  // Style description
-  document.getElementById('style-description').textContent =
-    result.styleDescription || '';
 
   // Reset slider
   setSliderPosition(50);
@@ -558,7 +555,7 @@ async function generatePreview() {
   };
 
   const mounting = APP.analysisResult?.windowCheck?.recommendation || 'in de dag';
-  const state    = getSelected('rg-kantel') === 'Open' ? 'Tot de helft' : 'Geheel uitgerold';
+  const state    = getSelected('rg-kantel') === 'Half open' ? 'Tot de helft' : 'Geheel uitgerold';
 
   try {
     const resp = await fetch('/preview', {
