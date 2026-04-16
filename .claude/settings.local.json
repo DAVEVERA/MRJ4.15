@@ -43,7 +43,14 @@
       "WebFetch(domain:docs.fal.ai)",
       "WebFetch(domain:github.com)",
       "WebSearch",
-      "WebFetch(domain:apidog.com)"
+      "WebFetch(domain:apidog.com)",
+      "Bash(rm -rf venv)",
+      "Bash(python3 -m venv --copies --without-pip venv)",
+      "Bash(python3 -m venv /home/davevera/.mrj3-venv)",
+      "Bash(/home/davevera/.mrj3-venv/bin/pip install *)",
+      "Bash(/home/davevera/.mrj3-venv/bin/python -c \"import app\")",
+      "Bash(/home/davevera/.mrj3-venv/bin/python app.py)",
+      "Bash(curl -s http://localhost:5000)"
     ]
   }
 }
