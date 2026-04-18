@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 import core
-from src.AI.utils import write_json_cache, strip_data_url
+from src.AI.utils import strip_data_url
 
 logger = logging.getLogger(__name__)
 
@@ -308,12 +308,10 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
     # ── PHASE 2: Quality gate ──────────────────────────────────
     quality = _phase_2_quality(client, image_b64, image_mime)
     if not quality["passed"]:
-        result = {
+        return {
             "qualityFailed":   True,
             "qualityFeedback": quality["feedback"],
         }
-        write_json_cache(result)
-        return result
 
     # ── PHASES 3, 4, 5, 7: run concurrently ──────────────────
     # All four only need the image and are mutually independent.
@@ -362,5 +360,4 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
         "suggestions":         catalog_match.get("suggestions", []),
     }
 
-    write_json_cache(result)
     return result

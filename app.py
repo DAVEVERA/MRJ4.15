@@ -10,6 +10,7 @@ Routes:
 
 import os
 import sys
+import json
 import base64
 import urllib.request
 from pathlib import Path
@@ -29,7 +30,7 @@ sys.path.insert(0, str(ROOT))
 
 import core
 from src.AI.analyse_claude import run_analysis_pipeline
-from src.AI.utils import save_upload_locally, upload_to_supabase
+from src.AI.utils import save_upload_locally, upload_to_supabase, strip_data_url
 from src.AI.sam2_segment import detect_window_bounds
 from src import refs as ref_images
 
@@ -190,8 +191,6 @@ def _run_gemini_render(
     quality="preview" → lower resolution, faster (~10-15s)
     quality="full"    → full HD render, slower (~30-45s)
     """
-    import json as _json
-
     # Resolve descriptors from core.py
     state_desc    = core.STATE_MAP.get(state, state)
     mounting_desc = core.resolve_mounting(mounting)
@@ -206,7 +205,7 @@ def _run_gemini_render(
     slat_desc   = f"with {slat_width} wide horizontal slats"
 
     analysis_block = (
-        _json.dumps(analysis, ensure_ascii=False, indent=2)
+        json.dumps(analysis, ensure_ascii=False, indent=2)
         if analysis
         else "No analysis JSON provided — derive window geometry purely from the image."
     )
@@ -312,7 +311,7 @@ Color, ladder type, slat angle, and mounting must be exactly as specified — no
 """.strip()
 
     # Decode and resize the room image (Gemini rejects oversized inputs)
-    mime_type, raw_b64 = _strip_data_url(image_b64)
+    mime_type, raw_b64 = strip_data_url(image_b64)
     img_bytes = base64.b64decode(raw_b64)
     img_bytes  = _resize_image(img_bytes, max_px=1536)
 
@@ -365,7 +364,6 @@ Color, ladder type, slat angle, and mounting must be exactly as specified — no
 
     contents += [prompt, room_part]
 
-    client   = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model=model_id,
         contents=contents,
@@ -404,13 +402,6 @@ def _resize_image(img_bytes: bytes, max_px: int = 1536) -> bytes:
     img.save(buf, format="JPEG", quality=90)
     return buf.getvalue()
 
-
-def _strip_data_url(data_url: str) -> tuple:
-    if data_url.startswith("data:"):
-        header, b64 = data_url.split(",", 1)
-        mime = header.split(";")[0].replace("data:", "")
-        return mime, b64
-    return "image/jpeg", data_url
 
 
 # ── ENTRYPOINT ───────────────────────────────────────────────────

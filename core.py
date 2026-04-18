@@ -80,8 +80,6 @@ FALLBACK_MODEL    = "claude-sonnet-4-6"
 RENDER_MODEL      = "gemini-3.1-flash-image-preview"   # full render — best quality
 RENDER_MODEL_FAST = "gemini-2.5-flash-image"           # preview — faster
 UPLOAD_PATH       = "data/uploads"
-JSON_CACHE_PATH   = "data/json_convert_to_text.txt"
-ANALYSE_JSON_PATH = "data/analyse.json"
 SUPABASE_BUCKET   = "uploads"
 
 
@@ -370,9 +368,7 @@ PHASE_LAWS: Dict[int, Dict[str, Any]] = {
         "name": "IMAGE_UPLOAD",
         "laws": [
             "Upload the image to Supabase simultaneously with triggering analyse_claude.py.",
-            "The result is a temporary cached JSON file at data/json_convert_to_text.txt.",
-            "The JSON must be read and interpreted as a fundamental law to obey.",
-            "All applicable files given in Phase 1 are chronologically ordered and mandatory to follow.",
+            "All applicable laws are chronologically ordered and mandatory to follow.",
             "You may not self-interpret. Laws are given; you must obey.",
         ],
         "negative_seeds": [],  # TODO: populate in next session
@@ -582,15 +578,6 @@ def get_allowed_colors(product_type: str) -> List[ProductColor]:
             f"Allowed: {ALLOWED_PRODUCT_TYPES}"
         )
     return MR_JEALOUSY_CATALOG[product_type]
-
-
-def validate_phase_order(current: int, expected: int) -> bool:
-    """
-    Enforce chronological phase execution.
-    Returns True only if current == expected.
-    Use this before executing any phase to prevent out-of-order calls.
-    """
-    return current == expected
 
 
 def resolve_mounting(key: str) -> str:

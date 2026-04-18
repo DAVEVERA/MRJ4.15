@@ -4,10 +4,16 @@ sam2_segment.py — Window Detection & Segmentation via SAM2
 Detects the window area in room photos and returns bounds for blind visualization.
 """
 
+import sys
 import base64
 from pathlib import Path
 from PIL import Image
 import io
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
+from src.AI.utils import strip_data_url
 
 
 def get_sam2_predictor():
@@ -47,7 +53,7 @@ def detect_window_bounds(image_b64: str) -> dict:
     """
     try:
         # Decode base64 image
-        mime, raw_b64 = _strip_data_url(image_b64)
+        mime, raw_b64 = strip_data_url(image_b64)
         img_bytes = base64.b64decode(raw_b64)
         img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
         img_w, img_h = img.size
@@ -105,9 +111,3 @@ def detect_window_bounds(image_b64: str) -> dict:
         return {"success": False, "error": str(e)}
 
 
-def _strip_data_url(data_url: str) -> tuple:
-    if data_url.startswith("data:"):
-        header, b64 = data_url.split(",", 1)
-        mime = header.split(";")[0].replace("data:", "")
-        return mime, b64
-    return "image/jpeg", data_url

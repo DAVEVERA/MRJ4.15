@@ -69,7 +69,15 @@
       "Bash(curl -s -X POST http://localhost:5000/preview -H 'Content-Type: application/json' -d '{\"image\":\"data:image/jpeg;base64,FAKE\",\"config\":{\"productType\":\"Houten Jaloezieën\",\"colorName\":\"Haver Milk\",\"colorHex\":\"#EFEBD8\",\"material\":\"Hout\",\"sampleUrl\":\"\"},\"mounting\":\"in de dag\",\"state\":\"Tot de helft\",\"extraOptions\":{\"lighting\":\"Middag \\(Helder\\)\",\"ladderTape\":true,\"slatWidth\":\"50mm\"},\"analysis\":{}}')",
       "Bash(kill 99671 99672)",
       "Bash(kill 103503)",
-      "Bash(fuser -k 5000/tcp)"
+      "Bash(fuser -k 5000/tcp)",
+      "Bash(awk '{print $9, $5}')",
+      "Bash(find . -type f \\\\\\( -name \"*.json\" -o -name \"*.html\" -o -name \"*.css\" -o -name \"*.js\" \\\\\\) ! -path \"./.git/*\" ! -path \"./.venv/*\" ! -path \"./venv/*\" -exec ls -lh {} \\\\;)",
+      "Bash(awk '{size=$1; path=$2; if\\(size>0\\) printf \"%8d %s\\\\n\", size, path; else printf \"    EMPTY  %s\\\\n\", path}')",
+      "Bash(sort -k2)",
+      "Bash(find ./data/uploads -type f -exec ls -lh {} \\\\;)",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(find \"/media/davevera/6134-3638/MRJ3.0 - kopie\" -type d -name \"__pycache__\" -exec rm -rf {} +)",
+      "Bash(find \"/media/davevera/6134-3638/MRJ3.0 - kopie\" -name \"*.pyc\" -delete)"
     ]
   }
 }

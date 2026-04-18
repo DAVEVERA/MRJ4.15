@@ -3,22 +3,20 @@ src/AI/utils.py — Shared utilities for MRJ4.15
 
 Handles:
 - Supabase image upload
-- JSON cache read/write (data/json_convert_to_text.txt)
+- Local image upload
 - Base64 helpers
 """
 
 import os
-import json
 import base64
 import uuid
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Optional
 
 # ── PATHS ───────────────────────────────────────────────────────
 
 ROOT       = Path(__file__).resolve().parents[2]
 UPLOAD_DIR = ROOT / "data" / "uploads"
-JSON_CACHE = ROOT / "data" / "json_convert_to_text.txt"
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -97,16 +95,3 @@ def upload_to_supabase(data_url: str) -> Optional[str]:
         return None
 
 
-# ── JSON CACHE ──────────────────────────────────────────────────
-
-def write_json_cache(data: Dict[str, Any]) -> None:
-    """Write analysis result dict to the JSON cache file."""
-    JSON_CACHE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-
-
-def read_json_cache() -> Optional[Dict[str, Any]]:
-    """Read the cached analysis result. Returns None if file is missing or invalid."""
-    try:
-        return json.loads(JSON_CACHE.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        return None
