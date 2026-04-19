@@ -26,3 +26,6 @@ Thumbs.db
 # IDE
 .idea/
 *.swp
+
+# Claude Code (local per-project settings)
+.claude/
