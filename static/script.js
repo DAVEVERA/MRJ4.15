@@ -358,7 +358,7 @@ function renderSuggestions(suggestions) {
       <img class="suggestion-thumb"
            src="${escHtml(color.sampleUrl)}"
            alt="${escHtml(color.name)}"
-           onerror="this.style.background='#e0d0c8'"
+           onerror="this.style.background='transparent'"
       />
       <div class="suggestion-info">
         <div class="suggestion-name">${escHtml(color.name)}</div>
@@ -502,7 +502,7 @@ function renderFlyoutList() {
       <img class="flyout-thumb"
            src="${escHtml(color.sampleUrl)}"
            alt="${escHtml(color.name)}"
-           onerror="this.style.background='#e0d0c8'"
+           onerror="this.style.background='transparent'"
       />
       <div>
         <div class="flyout-name">${escHtml(color.name)}</div>

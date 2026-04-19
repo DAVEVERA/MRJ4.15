@@ -112,6 +112,24 @@
   ══════════════════════════════════════════ -->
   <section id="page-result" class="page">
 
+    <header class="result-header">
+      <div class="result-header-left">
+        <div class="avatar avatar-mj avatar-mj--white" aria-hidden="true">
+          <img src="/img/speechbubble-logo.svg" alt="Mr. Jealousy logo">
+        </div>
+        <span class="result-header-title">Paleisje hoor 😍</span>
+      </div>
+      <button class="btn-close" type="button" id="btn-afsluiten-result" aria-label="Afsluiten">
+        Afsluiten
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="result-body">
+
     <!-- LEFT: Before / After slider -->
     <div class="result-left">
 
@@ -151,13 +169,6 @@
         <div class="avatar avatar-dots" aria-hidden="true">
           <span><i></i><i></i><i></i></span>
         </div>
-        <button class="btn-close" type="button" id="btn-afsluiten-result" aria-label="Afsluiten">
-          Afsluiten
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
-            <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
-          </svg>
-        </button>
       </div>
 
       <!-- Error banner (quality check failure) -->
@@ -337,6 +348,8 @@
 
       </div><!-- /config-body -->
     </div><!-- /result-right -->
+
+    </div><!-- /result-body -->
 
   </section><!-- /page-result -->
 
