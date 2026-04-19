@@ -77,8 +77,8 @@ class RenderInstruction(TypedDict):
 PHASE_COUNT       = 9
 ANALYSIS_MODEL    = "claude-opus-4-6"
 FALLBACK_MODEL    = "claude-sonnet-4-6"
-RENDER_MODEL      = "gemini-3.1-flash-image-preview"   # full render — best quality
-RENDER_MODEL_FAST = "gemini-2.5-flash-image"           # preview — faster
+RENDER_MODEL      = "gemini-2.5-flash-image-preview"   # full render — preview variant of the image model
+RENDER_MODEL_FAST = "gemini-2.5-flash-image"           # preview — production image model
 UPLOAD_PATH       = "data/uploads"
 SUPABASE_BUCKET   = "uploads"
 

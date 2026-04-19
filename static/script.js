@@ -82,6 +82,7 @@ const APP = {
   progressInterval: null,
   renderBusy: false,
   previewBusy: false,        // true while generating preview
+  previewAbortController: null,  // for cancelling preview requests
 };
 
 // ── DOM REFS ───────────────────────────────────────────────────
@@ -214,8 +215,9 @@ async function renderVisualization() {
   if (APP.renderBusy || !APP.uploadedImageBase64 || !APP.selectedColor) return;
   APP.renderBusy = true;
 
-  const btns = document.querySelectorAll('#btn-visualiseer-top, #btn-visualiseer-bottom');
-  btns.forEach(b => { b.disabled = true; b.textContent = '⏳ Renderen…'; });
+  showRenderLoader();
+  const btn = document.getElementById('btn-visualiseer');
+  btn.disabled = true;
 
   const config = {
     productType:  APP.selectedColor.productType,
@@ -252,13 +254,47 @@ async function renderVisualization() {
     if (data.image) {
       document.getElementById('ba-after').src = data.image;
       setSliderPosition(50);
+      hideRenderLoader();
+      scrollToResult();
     }
   } catch (err) {
+    hideRenderLoader();
     alert('Visualisatie mislukt: ' + err.message);
   } finally {
     APP.renderBusy = false;
-    btns.forEach(b => { b.disabled = false; b.textContent = '✨ Resultaat visualiseren'; });
+    btn.disabled = false;
   }
+}
+
+// ── LOADER VISIBILITY ──────────────────────────────────────────
+
+function showRenderLoader() {
+  const loader = document.getElementById('render-loader');
+  if (loader) loader.style.display = 'flex';
+}
+
+function hideRenderLoader() {
+  const loader = document.getElementById('render-loader');
+  if (loader) loader.style.display = 'none';
+}
+
+// ── AUTO SCROLL ────────────────────────────────────────────────
+
+function scrollToResult() {
+  const baContainer = document.getElementById('ba-container');
+  if (baContainer) {
+    baContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// ── DEBOUNCE UTILITY ───────────────────────────────────────────
+
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
 }
 
 // ── POPULATE RESULT ────────────────────────────────────────────
@@ -537,10 +573,13 @@ async function generatePreview() {
   if (!APP.uploadedImageBase64 || !APP.selectedColor || APP.previewBusy || APP.renderBusy) return;
   APP.previewBusy = true;
 
-  // Show loading indicator on preview area
-  const afterImg = document.getElementById('ba-after');
-  const originalOpacity = afterImg.style.opacity;
-  afterImg.style.opacity = '0.6';
+  // Cancel previous preview request if any
+  if (APP.previewAbortController) {
+    APP.previewAbortController.abort();
+  }
+  APP.previewAbortController = new AbortController();
+
+  showRenderLoader();
 
   const config = {
     productType:  APP.selectedColor.productType,
@@ -571,6 +610,7 @@ async function generatePreview() {
         extraOptions,
         analysis: APP.analysisResult,
       }),
+      signal: APP.previewAbortController.signal,
     });
     if (!resp.ok) throw new Error(`Preview fout: ${resp.status}`);
     const data = await resp.json();
@@ -578,10 +618,12 @@ async function generatePreview() {
       document.getElementById('ba-after').src = data.image;
     }
   } catch (err) {
-    console.warn("Preview generation failed (non-critical):", err);
+    if (err.name !== 'AbortError') {
+      console.warn("Preview generation failed (non-critical):", err);
+    }
   } finally {
     APP.previewBusy = false;
-    afterImg.style.opacity = originalOpacity;
+    hideRenderLoader();
   }
 }
 
@@ -613,11 +655,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Radio groups
   ['rg-ladder', 'rg-lamel', 'rg-kantel', 'rg-dagdeel'].forEach(initRadioGroup);
 
-  // Live preview update on option change (ladder, slat width, tilt)
+  // Live preview update on option change (ladder, slat width, tilt) with debounce
+  const debouncedPreview = debounce(generatePreview, 400);
   ['rg-ladder', 'rg-lamel', 'rg-kantel'].forEach(groupId => {
     document.getElementById(groupId)
       ?.querySelectorAll('.radio-item')
-      .forEach(item => item.addEventListener('click', generatePreview));
+      .forEach(item => item.addEventListener('click', debouncedPreview));
   });
 
   // Flyout material toggle
@@ -643,9 +686,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === document.getElementById('flyout-overlay')) closeFlyout();
   });
 
-  // Visualiseer buttons
-  document.getElementById('btn-visualiseer-top').addEventListener('click', renderVisualization);
-  document.getElementById('btn-visualiseer-bottom').addEventListener('click', renderVisualization);
+  // Visualiseer button (single button)
+  document.getElementById('btn-visualiseer').addEventListener('click', renderVisualization);
 
   // Opnieuw & Opslaan
   document.getElementById('btn-opnieuw').addEventListener('click', goToLanding);

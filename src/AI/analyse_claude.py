@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT))
 
 import core
 from src.AI.utils import strip_data_url
+from src.AI.sam2_segment import detect_window_bounds
 
 logger = logging.getLogger(__name__)
 
@@ -313,18 +314,21 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
             "qualityFeedback": quality["feedback"],
         }
 
-    # ── PHASES 3, 4, 5, 7: run concurrently ──────────────────
-    # All four only need the image and are mutually independent.
-    # Total wall time = max(3, 4, 5, 7) instead of their sum.
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        f3 = executor.submit(_phase_3_style,    client, image_b64, image_mime)
-        f4 = executor.submit(_phase_4_colors,   client, image_b64, image_mime)
-        f5 = executor.submit(_phase_5_window,   client, image_b64, image_mime)
-        f7 = executor.submit(_phase_7_lighting, client, image_b64, image_mime)
+    # ── PHASES 3, 4, 5, 7 + SAM2: run concurrently ──────────
+    # All four Claude phases only need the image and are mutually independent.
+    # SAM2 runs in the same pool — it's GPU/CPU bound so it overlaps fine
+    # with the network-bound Claude calls.
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        f3   = executor.submit(_phase_3_style,    client, image_b64, image_mime)
+        f4   = executor.submit(_phase_4_colors,   client, image_b64, image_mime)
+        f5   = executor.submit(_phase_5_window,   client, image_b64, image_mime)
+        f7   = executor.submit(_phase_7_lighting, client, image_b64, image_mime)
+        fsam = executor.submit(detect_window_bounds, image_data_url)
         style    = f3.result()
         colors   = f4.result()
         window   = f5.result()
         lighting = f7.result()
+        sam      = fsam.result()
 
     # ── PHASE 6: Mounting strategy (pure logic, no API call) ──
     mounting = _phase_6_mounting(window)
@@ -348,6 +352,16 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
         "specialConsiderations": window.get("exceptions", ""),
     }
 
+    # SAM2 window region — mask drives the SDXL inpaint, bounds are metadata
+    window_bounds = None
+    window_mask_b64 = None
+    if sam.get("success"):
+        window_bounds = sam["bounds"]
+        window_bounds["confidence"] = sam.get("confidence", 0.0)
+        window_mask_b64 = sam.get("mask_b64")
+    else:
+        logger.warning("SAM2 detection failed: %s", sam.get("error", "unknown"))
+
     result = {
         "qualityFailed":       False,
         "style":               style.get("style", ""),
@@ -356,6 +370,8 @@ def run_analysis_pipeline(image_data_url: str) -> Dict[str, Any]:
         "lightingConditions":  lighting.get("lightingConditions", ""),
         "colour_palette":      colors.get("colour_palette", []),
         "windowCheck":         window_check,
+        "windowBounds":        window_bounds,
+        "windowMask":          window_mask_b64,
         "materialSuggestions": catalog_match.get("materialSuggestions", []),
         "suggestions":         catalog_match.get("suggestions", []),
     }

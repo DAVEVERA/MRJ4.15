@@ -1,48 +1,44 @@
 #!/bin/bash
 # start.sh — Quick start script for MRJ3.0
+#
+# Note: venv lives in ~/mrj_venv (not on the USB drive) because
+# exFAT filesystems do not support the symlinks Python venv requires.
 
 set -e
 
-echo "🚀 MRJ3.0 Quick Start"
+VENV="$HOME/mrj_venv"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+echo "MRJ3.0 Quick Start"
 echo "=================================="
 
 # Check Python
 if ! command -v python3 &> /dev/null; then
-    echo "❌ Python 3 not found. Install from python.org"
+    echo "Python 3 not found. Install from python.org"
     exit 1
 fi
+echo "Python: $(python3 --version)"
 
-PYTHON=$(which python3)
-echo "✅ Python: $PYTHON"
-
-# Check if venv exists
-if [ ! -d "venv" ]; then
+# Create venv if missing
+if [ ! -d "$VENV" ]; then
     echo ""
-    echo "📦 Creating virtual environment..."
-    python3 -m venv venv
+    echo "Creating virtual environment at $VENV ..."
+    python3 -m venv "$VENV"
 fi
 
 # Activate venv
-source venv/bin/activate
+source "$VENV/bin/activate"
 
 echo ""
-echo "📥 Installing dependencies..."
-pip install -q -r requirements.txt
+echo "Installing / updating dependencies..."
+pip install -q -r "$SCRIPT_DIR/requirements.txt"
 
 echo ""
-echo "⚙️  Setting up SAM2..."
-python setup_sam2.py
+echo "Setting up SAM2..."
+python "$SCRIPT_DIR/setup_sam2.py"
 
-if [ $? -eq 0 ]; then
-    echo ""
-    echo "=================================="
-    echo "✅ Setup complete!"
-    echo ""
-    echo "Starting Flask app on http://localhost:5000"
-    echo ""
-    python app.py
-else
-    echo ""
-    echo "❌ Setup failed. Check errors above."
-    exit 1
-fi
+echo ""
+echo "=================================="
+echo "Setup complete — starting Flask on http://localhost:5000"
+echo ""
+python "$SCRIPT_DIR/app.py"

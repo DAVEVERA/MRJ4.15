@@ -834,6 +834,15 @@ img {
   color: var(--text-dark);
 }
 
+.radio-icon-svg {
+  width: 36px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
 /* Info icon */
 .info-icon {
   width: 18px;
@@ -1045,6 +1054,46 @@ img {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ── RENDER LOADER ─────────────────────────────────────────────── */
+
+.render-loader {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 50;
+  border-radius: var(--radius-card);
+}
+
+.render-loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 28px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.render-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f0f0f0;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.render-loader-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin: 0;
 }
 
 /* ── RESPONSIVE — TABLET (769px–1199px) ─────────────────────── */
