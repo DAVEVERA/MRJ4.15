@@ -20,7 +20,7 @@ from google.genai import types
 from PIL import Image
 
 
-RENDER_MODEL = "gemini-2.5-flash-image"  # MRJ415 uses this exact identifier
+RENDER_MODEL = "gemini-3-pro-image-preview"  # Nano Banana Pro — Gemini 3 image model
 
 
 # ── DESCRIPTOR MAPS (verbatim from MRJ415 services/geminiService.ts) ──────
