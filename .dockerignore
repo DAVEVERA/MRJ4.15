@@ -1,0 +1,38 @@
+# Build context exclusions — keep image lean
+
+# VCS
+.git/
+.gitignore
+.github/
+
+# Local Claude
+.claude/
+
+# Secrets (env vars come from Cloud Run console)
+.env
+.env.example
+
+# Python caches & venvs
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+mrj_venv/
+
+# Heavy / not needed in container
+models/                  # SAM2 .pt (~900 MB) — lazy-download in production
+data/uploads/            # user uploads
+media/                   # design references (Figma exports)
+
+# Dev-only files
+test_keys.py
+setup_sam2.py
+start.bat
+start.sh
+
+# OS
+.DS_Store
+Thumbs.db
